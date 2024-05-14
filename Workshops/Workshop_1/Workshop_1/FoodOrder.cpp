@@ -3,10 +3,12 @@
 Name       : Sarandip Sahota Ram
 Email      : ssram@myseneca.ca
 Student_ID : 106824238
-Date       : 19-01-2024
+Date       : 14-05-2024
 
-I have done all the coding by myself and only copied the code that
-my professor provided to complete my workshops and assignments.
+I declare that this submission is the result of my own work and 
+I only copied the code that my professor provided to complete my 
+workshops and assignments. This submitted piece of work has not 
+been shared with any other student or 3rd party content provider.
 *****************************************************************/
 #include "FoodOrder.h"
 #include <iostream>
@@ -17,6 +19,7 @@ using namespace seneca;
 
 double g_taxrate = 0.0;
 double g_dailydiscount = 0.0;
+static int count = 0;
 
 std::istream& FoodOrder::read(std::istream& in) {
 	if (in.good())
@@ -32,6 +35,7 @@ std::istream& FoodOrder::read(std::istream& in) {
 }
 
 void FoodOrder::display() const {
+
 	count++;
 	if (m_customerName[0] == '\0') {
 		std::cout << count << ". " << "No Order" << std::endl;
