@@ -9,6 +9,7 @@ x64/
 #Other Files
 github/
 In-Class/
+.vs/
 
 # Prerequisites
 *.d
