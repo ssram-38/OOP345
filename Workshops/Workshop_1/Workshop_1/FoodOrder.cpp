@@ -35,7 +35,7 @@ std::istream& FoodOrder::read(std::istream& in) {
 }
 
 void FoodOrder::display() const {
-
+	double tax = m_price * g_taxrate;
 	count++;
 	if (m_customerName[0] == '\0') {
 		std::cout << count << ". " << "No Order" << std::endl;
@@ -43,10 +43,10 @@ void FoodOrder::display() const {
 	else
 	{
 		std::cout << std::setw(2) << std::setfill(' ') << std::left << count << ". " << std::setw(10) << std::left << m_customerName << "|" << std::setw(25) << m_orderDescription
-			<< "|" << std::setw(12) << std::fixed << std::setprecision(2) << m_price << "|";
+			<< "|" << std::setw(12) << std::fixed << std::setprecision(2) << m_price + tax << "|";
 		if (m_dailySpecialStatus == 'Y')
 		{
-			std::cout << std::setw(13) << std::right << m_price;
+			std::cout << std::setw(13) << std::right << m_price + tax - g_dailydiscount;
 		}
 
 		std::cout << std::endl;
