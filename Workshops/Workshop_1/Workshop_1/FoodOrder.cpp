@@ -38,6 +38,8 @@ FoodOrder& FoodOrder::operator=(const FoodOrder& other) {
 		this->m_orderTag = other.m_orderTag;
 		strcpy(this->m_customerName, other.m_customerName);
 		if (other.m_orderDescription != nullptr) {
+			delete[] this->m_orderDescription;
+			m_orderDescription = nullptr;
 			this->m_orderDescription = new char[strlen(other.m_orderDescription) + 1];
 			strcpy(this->m_orderDescription, other.m_orderDescription);
 		}

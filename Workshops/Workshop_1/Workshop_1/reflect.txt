@@ -1,0 +1,32 @@
+/*****************************************************************
+                        Declaration
+Name       : Sarandip Sahota Ram
+Email      : ssram@myseneca.ca
+Student_ID : 106824238
+Date       : 14-05-2024
+
+I declare that this submission is the result of my own work and 
+I only copied the code that my professor provided to complete my 
+workshops and assignments. This submitted piece of work has not 
+been shared with any other student or 3rd party content provider.
+*****************************************************************/
+
+This workshops was quite straightforward and simple as it a refresher on what we did in last semester.
+I did not face any major difficulties.
+
+The difference in internal and external linkage is that when a variable is defined internally like
+"static int count = 0;" in the display function the variable count can not be affected by other 
+parts of the program.
+
+whereas the a variable is defined externally like the "extern double g_taxrate;" and 
+"extern double g_dailydiscount;" in the FoodOrder header file, they are accessible and modifiable
+across multiple files in our program.
+
+In my solution the use of the static variable "static int count = 0;" is used to keep track of how
+many time the display function has been called. It is used because it is only relevant to the display
+function and we don't need to use global variable, making it more efficient.
+
+The changes that I made to the FoodOrder class were they way the m_orderDescription was defined
+so I can dynamically allocate memory i also added a default constructor that initializes all data members
+to an empty safe state, a copy constructor that copies an existing object to a new one,
+a copy assignment operator that copies an object to an existing object, and a destructor which deallocates memory.
