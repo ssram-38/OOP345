@@ -36,7 +36,7 @@ TimedTask& TimedTask::operator=(const TimedTask& other) {
 		this->m_numRecords = other.m_numRecords;
 		this->m_startTime = other.m_startTime;
 		this->m_endTime = other.m_endTime;
-		for (size_t i = 0; i < m_numRecords; i++)
+		for (int i = 0; i < m_numRecords; i++)
 		{
 			if (other.m_taskRecords[i].m_taskName != nullptr) {
 				delete[] this->m_taskRecords[i].m_taskName;
@@ -57,7 +57,7 @@ TimedTask& TimedTask::operator=(const TimedTask& other) {
 // Destructor
 // @brief Cleans up dynamic memory for task names
 TimedTask::~TimedTask() {
-	for (size_t i = 0; i < m_numRecords; i++)
+	for (int i = 0; i < m_numRecords; i++)
 	{
 		delete[] m_taskRecords[i].m_taskName;
 		m_taskRecords[i].m_taskName = nullptr;
@@ -92,7 +92,7 @@ void TimedTask::addTask(const char* TaskName) {
 std::ostream& seneca::operator<<(std::ostream& os, const TimedTask& task) {
 	os << "Execution Times:" << std::endl;
 	os << "--------------------------" << std::endl;
-	for (size_t i = 0; i < task.m_numRecords; i++)
+	for (int i = 0; i < task.m_numRecords; i++)
 	{
 		os << std::setw(21) << std::left << task.m_taskRecords[i].m_taskName
 			<< " " << std::setw(13) << std::right << task.m_taskRecords[i].m_taskDuration.count()

@@ -39,7 +39,6 @@ namespace seneca {
 		std::chrono::steady_clock::time_point m_startTime;		// The start time of the task
 		std::chrono::steady_clock::time_point m_endTime;		// The end time of the task
 		Task m_taskRecords[10];									// The array of task records
-		friend std::ostream& operator<<(std::ostream& os, const TimedTask& task) ;	// Overloaded insertion operator
 	public:
 		// Constructor, Copy Constructor, Copy Assignment Operator and Destructor
 		TimedTask();
@@ -51,6 +50,7 @@ namespace seneca {
 		void startClock();										// Sets the start time of the task
 		void stopClock();										// Sets the end time of the task
 		void addTask(const char* TaskName);						// Adds a task to the task list
+		friend std::ostream& operator<<(std::ostream& os, const TimedTask& task);	// Overloaded insertion operator
 	};
 }
 #endif // !SENECA_TIMEDTASK_H

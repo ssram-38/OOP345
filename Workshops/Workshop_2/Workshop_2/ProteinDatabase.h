@@ -19,7 +19,7 @@ namespace seneca {
 	// ProteinDatabase class to store the protein sequences
 	class ProteinDatabase {
 		// Private data members
-		int m_numProteinSequences;									// The number of protein sequences currently stored
+		size_t m_numProteinSequences;									// The number of protein sequences currently stored
 		std::string* m_proteinSequence = nullptr;					// The array of protein sequences
 	public:
 		// Constructor, Copy Constructor, Copy Assignment Operator and Destructor

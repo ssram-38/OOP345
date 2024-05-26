@@ -36,7 +36,7 @@ ProteinDatabase& ProteinDatabase::operator=(const ProteinDatabase& other) {
 		m_numProteinSequences = other.m_numProteinSequences;
 		if (other.m_proteinSequence != nullptr) {
 			m_proteinSequence = new std::string[m_numProteinSequences];
-			for (int i = 0; i < m_numProteinSequences; ++i) {
+			for (size_t i = 0; i < m_numProteinSequences; ++i) {
 				m_proteinSequence[i] = other.m_proteinSequence[i];
 			}
 		}
@@ -46,7 +46,6 @@ ProteinDatabase& ProteinDatabase::operator=(const ProteinDatabase& other) {
 	}
 	return *this;
 }
-
 
 // Destructor
 // @brief Deallocates the memory for the protein sequences
