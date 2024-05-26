@@ -53,6 +53,7 @@ namespace seneca {
 		void addTask(const char* TaskName);						// Adds a task to the task list
 		friend std::ostream& operator<<(std::ostream& os, const TimedTask& task) // Overloaded insertion operator
 		{
+			os << "--------------------------" << std::endl;
 			os << "Execution Times:" << std::endl;
 			os << "--------------------------" << std::endl;
 			for (int i = 0; i < task.m_numRecords; i++)
