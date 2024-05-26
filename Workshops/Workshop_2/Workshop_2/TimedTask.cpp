@@ -14,7 +14,6 @@ been shared with any other student or 3rd party content provider.
 
 // Includes necessary headers
 #include "TimedTask.h"
-#include <iomanip>
 
 using namespace seneca;
 
@@ -89,14 +88,3 @@ void TimedTask::addTask(const char* TaskName) {
 
 // friend insertion operator function
 // Overloads the insertion operator to output task data
-std::ostream& seneca::operator<<(std::ostream& os, const TimedTask& task) {
-	os << "Execution Times:" << std::endl;
-	os << "--------------------------" << std::endl;
-	for (int i = 0; i < task.m_numRecords; i++)
-	{
-		os << std::setw(21) << std::left << task.m_taskRecords[i].m_taskName
-			<< " " << std::setw(13) << std::right << task.m_taskRecords[i].m_taskDuration.count()
-			<< " " << task.m_taskRecords[i].m_timeUnits << std::endl;
-	}
-	return os;
-}

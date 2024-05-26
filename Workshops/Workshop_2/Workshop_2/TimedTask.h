@@ -17,6 +17,7 @@ been shared with any other student or 3rd party content provider.
 #include <cstring>
 #include "string"
 #include <iostream>
+#include <iomanip>
 
 namespace seneca {
 	constexpr int MAX_UNIT_LEN = 50;							// The maximum length of the time units
@@ -50,8 +51,18 @@ namespace seneca {
 		void startClock();										// Sets the start time of the task
 		void stopClock();										// Sets the end time of the task
 		void addTask(const char* TaskName);						// Adds a task to the task list
-		friend std::ostream& operator<<(std::ostream& os, const TimedTask& task); // Overloaded insertion operator
+		friend std::ostream& operator<<(std::ostream& os, const TimedTask& task) // Overloaded insertion operator
+		{
+			os << "Execution Times:" << std::endl;
+			os << "--------------------------" << std::endl;
+			for (int i = 0; i < task.m_numRecords; i++)
+			{
+				os << std::setw(21) << std::left << task.m_taskRecords[i].m_taskName
+					<< " " << std::setw(13) << std::right << task.m_taskRecords[i].m_taskDuration.count()
+					<< " " << task.m_taskRecords[i].m_timeUnits << std::endl;
+			}
+			return os;
+		}
 	};
-	
 }
 #endif // !SENECA_TIMEDTASK_H
