@@ -25,7 +25,9 @@ namespace seneca {
 		// Constructor, Copy Constructor, Copy Assignment Operator and Destructor
 		ProteinDatabase();
 		ProteinDatabase(const ProteinDatabase& other);
+		ProteinDatabase(ProteinDatabase&& other) noexcept;
 		ProteinDatabase& operator=(const ProteinDatabase& other);
+		ProteinDatabase& operator=(ProteinDatabase&& other) noexcept;
 		~ProteinDatabase();
 
 		// One argument constructor

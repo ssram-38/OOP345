@@ -28,6 +28,12 @@ ProteinDatabase::ProteinDatabase(const ProteinDatabase& other) : m_numProteinSeq
 	*this = other;
 }
 
+// Move constructor
+// @brief Moves the data members from the other ProteinDatabase object
+ProteinDatabase::ProteinDatabase(ProteinDatabase&& other) noexcept {
+	*this = std::move(other);
+}
+
 // Copy assignment operator
 // @brief Copies the data members from the other ProteinDatabase object
 ProteinDatabase& ProteinDatabase::operator=(const ProteinDatabase& other) {
@@ -43,6 +49,19 @@ ProteinDatabase& ProteinDatabase::operator=(const ProteinDatabase& other) {
 		else {
 			m_proteinSequence = nullptr;
 		}
+	}
+	return *this;
+}
+
+// Move assignment operator
+// @brief Moves the data members from the other ProteinDatabase object
+ProteinDatabase& ProteinDatabase::operator=(ProteinDatabase&& other) noexcept {
+	if (this != &other) {
+		delete[] m_proteinSequence;
+		m_numProteinSequences = other.m_numProteinSequences;
+		m_proteinSequence = other.m_proteinSequence;
+		other.m_numProteinSequences = 0;
+		other.m_proteinSequence = nullptr;
 	}
 	return *this;
 }
