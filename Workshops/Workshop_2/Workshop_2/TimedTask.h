@@ -62,6 +62,7 @@ namespace seneca {
 					<< " " << std::setw(13) << std::right << task.m_taskRecords[i].m_taskDuration.count()
 					<< " " << task.m_taskRecords[i].m_timeUnits << std::endl;
 			}
+			os << "--------------------------" << std::endl;
 			return os;
 		}
 	};
