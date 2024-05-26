@@ -11,8 +11,8 @@ workshops and assignments. This submitted piece of work has not
 been shared with any other student or 3rd party content provider.
 *****************************************************************/
 #pragma once
-#ifndef SENECA_PROTEINBASE_H
-#define SENECA_PROTEINBASE_H
+#ifndef SENECA_PROTEINDATABASE_H
+#define SENECA_PROTEINDATABASE_H
 #include <string>
 
 namespace seneca {
@@ -37,4 +37,4 @@ namespace seneca {
 	};
 }
 
-#endif // !SENECA_PROTEINBASE_H
+#endif // !SENECA_PROTEINDATABASE_H
