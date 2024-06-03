@@ -31,8 +31,8 @@ namespace seneca
 		bool operator<(const Book& other) const;								// Returns true if the average number of pages per chapter is less than the other book
 		bool operator>(const Book& other) const;								// Returns true if the average number of pages per chapter is greater than the other book
 		std::ostream& print(std::ostream& os) const;							// Prints the book information
-		friend std::ostream& operator<<(std::ostream& os, const Book& bk);		// Overloaded operator<<
 	};
+	std::ostream& operator<<(std::ostream& os, const Book& bk);		// Overloaded operator<<
 }
 #endif // !SENECA_BOOK_H
 
