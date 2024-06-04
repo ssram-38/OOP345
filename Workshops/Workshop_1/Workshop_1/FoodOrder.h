@@ -22,9 +22,9 @@ namespace seneca {
 	const int MAX_NAME_SIZE = 10;
 	const int MAX_DESC_SIZE = 25;
 	class FoodOrder {
-		char m_orderTag;
-		char m_customerName[MAX_NAME_SIZE] = { '\0' };
-		char* m_orderDescription = nullptr;
+		char m_orderTag{};
+		char m_customerName[MAX_NAME_SIZE]{ '\0' };
+		char* m_orderDescription{ nullptr };
 		double m_price;
 		char m_dailySpecialStatus;
 	public:

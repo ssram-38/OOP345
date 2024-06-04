@@ -51,20 +51,7 @@ namespace seneca {
 		void startClock();										// Sets the start time of the task
 		void stopClock();										// Sets the end time of the task
 		void addTask(const char* TaskName);						// Adds a task to the task list
-		friend std::ostream& operator<<(std::ostream& os, const TimedTask& task) // Overloaded insertion operator
-		{
-			os << "--------------------------" << std::endl;
-			os << "Execution Times:" << std::endl;
-			os << "--------------------------" << std::endl;
-			for (int i = 0; i < task.m_numRecords; i++)
-			{
-				os << std::setw(21) << std::left << task.m_taskRecords[i].m_taskName
-					<< " " << std::setw(13) << std::right << task.m_taskRecords[i].m_taskDuration.count()
-					<< " " << task.m_taskRecords[i].m_timeUnits << std::endl;
-			}
-			os << "--------------------------" << std::endl;
-			return os;
-		}
+		friend std::ostream& operator<<(std::ostream& os, const TimedTask& task); // Overloaded insertion operator
 	};
 }
 #endif // !SENECA_TIMEDTASK_H

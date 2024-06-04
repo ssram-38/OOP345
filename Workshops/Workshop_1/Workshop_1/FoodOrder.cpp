@@ -15,7 +15,7 @@ been shared with any other student or 3rd party content provider.
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include <string>
+#include <cstring>
 
 using namespace seneca;
 
