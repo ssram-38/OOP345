@@ -24,7 +24,7 @@ namespace seneca {
 
 	// Constructor with 2 arguments
 	// Initializes the member variables with the data provided
-	Restaurant::Restaurant(const Reservation* reservations[], size_t cnt) {
+	Restaurant::Restaurant(const Reservation* reservations[], size_t cnt) : m_reservations{ nullptr }, m_size{ 0 }, m_count{ 0 } {
 		m_size = cnt;
 		m_count = 0;
 		m_reservations = new Reservation * [m_size];
