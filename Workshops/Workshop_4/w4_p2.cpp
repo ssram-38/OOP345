@@ -1,3 +1,5 @@
+// Workshop 4 - Containers
+
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -49,7 +51,7 @@ int main(int argc, char** argv)
 			}
 		} while (file);
 
-		ppReservations = new const seneca::Reservation * [cnt];
+		ppReservations = new const seneca::Reservation*[cnt];
 		cnt = 0;
 
 		// read again from the file, but this time load and store data
@@ -181,7 +183,7 @@ int main(int argc, char** argv)
 								new seneca::Reservation(*ppReservations[5]),
 								new seneca::Reservation(*ppReservations[7]),
 								new seneca::Reservation(*ppReservations[9])
-		};
+							};
 
 		std::cout << "R + CS: Testing Relations\n";
 		std::cout << "==========================\n";
@@ -214,5 +216,6 @@ int main(int argc, char** argv)
 	for (auto i = 0u; i < cnt; ++i)
 		delete ppReservations[i];
 	delete[] ppReservations;
+
 	return cout;
 }
