@@ -63,7 +63,7 @@ namespace seneca {
 
 	// overloaded operator<<
 	// displays the reservation details
-	std::ostream& seneca::operator<<(std::ostream& os, const Reservation& res) {
+	std::ostream& operator<<(std::ostream& os, const Reservation& res) {
 
 		// displays the ID, name, email, day, time and partysize with proper formatting
 		os << "Reservation " << std::setw(10) << std::right << res.m_id << ": " << std::setw(20) << std::right << res.m_name << "  " << std::setw(20) << std::left << "<" + res.m_email + ">";
