@@ -1,0 +1,7 @@
+TimedTask.cpp:91:15: warning: ‘std::ostream& seneca::operator<<(std::ostream&, const TimedTask&)’ has not been declared within ‘seneca’
+   91 | std::ostream& seneca::operator<<(std::ostream& os, const TimedTask& task)
+      |               ^~~~~~
+In file included from TimedTask.cpp:16:
+TimedTask.h:54:38: note: only here as a ‘friend’
+   54 |                 friend std::ostream& operator<<(std::ostream& os, const TimedTask& task); // Overloaded insertion operator
+      |                                      ^~~~~~~~
