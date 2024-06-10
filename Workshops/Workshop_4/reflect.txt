@@ -1,0 +1,23 @@
+/*****************************************************************
+						Declaration
+Name       : Sarandip Sahota Ram
+Email      : ssram@myseneca.ca
+Student_ID : 106824238
+Date       : 06-06-2024
+
+I declare that this submission is the result of my own work and
+I only copied the code that my professor provided to complete my
+workshops and assignments. This submitted piece of work has not
+been shared with any other student or 3rd party content provider.
+*****************************************************************/
+Composition and aggregation are two types of association. the differences between them are
+Composition relationships are where the child object cannot exist independently of the parent
+their both created and destroyed the same time.
+
+whereas the aggregation relationships the child object can exist independently of the parent object. 
+
+
+the copy constructor and move constructor differ as the copy one creates a new
+object and keeps both objects separately with their own memory whereas the 
+move constructor move the data from one object to another keeping the same 
+memory location and deleting the other.
