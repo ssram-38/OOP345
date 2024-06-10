@@ -14,49 +14,34 @@ been shared with any other student or 3rd party content provider.
 #ifndef SENECA_RESERVATION_H
 #define SENECA_RESERVATION_H
 
-#include <string>
 #include <iostream>
+#include <string>
 
 namespace seneca {
-    class Reservation {
-        char* m_id;
-        std::string m_name;
-        std::string m_email;
-        int m_partysize;
-        int m_day;
-        int m_hour;
-    public:
-        // Default constructor
-        Reservation();
 
-        // Constructor with one argument
-        Reservation(const std::string& res);
+	class Reservation {
+		char* m_reservationId{ nullptr };
+		std::string m_name; // name of the reserver
+		std::string m_email; // email of the reserver
+		int m_numOfPeople{ 0 }; // number of people in the party
+		int m_day{ 0 }; // day of the reservation
+		int m_hour{ 0 }; // hour of the reservation
+	public:
+		Reservation() = default;
+		Reservation(const std::string& res);
+		Reservation(const Reservation& src); // copy constructor
+		Reservation(Reservation&& src) noexcept; // move constructor
+		~Reservation(); // destructor
+		Reservation& operator=(const Reservation& src); // copy assignment operator
+		Reservation& operator=(Reservation&& src) noexcept; // move assignment operator
 
-        // Copy constructor
-        Reservation(const Reservation& other);
+		void update(int day, int time); // modifier
 
-        // Copy assignment operator
-        Reservation& operator=(const Reservation& other);
+		void display(std::ostream& os) const; // query
 
-        // Move constructor
-        Reservation(Reservation&& other) noexcept;
+		friend std::ostream& operator<<(std::ostream& os, const Reservation& src); // friend helper function
+	};
 
-        // Move assignment operator
-        Reservation& operator=(Reservation&& other) noexcept;
-
-        // Destructor
-        ~Reservation();
-
-        // Utility function to trim whitespace from a string
-        static std::string trim(const std::string& str);
-
-        // Function to update day and time
-        void update(int day, int time);
-
-        // Friend function to overload the output stream operator
-        friend std::ostream& operator<<(std::ostream& os, const Reservation& res);
-    };
 }
 
 #endif // !SENECA_RESERVATION_H
-

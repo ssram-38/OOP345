@@ -11,132 +11,137 @@ workshops and assignments. This submitted piece of work has not
 been shared with any other student or 3rd party contenppt provider.
 *****************************************************************/
 
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
 #include "ConfirmationSender.h"
-#include <algorithm>
+using namespace std;
+
 
 namespace seneca {
+	ConfirmationSender::ConfirmationSender(const ConfirmationSender& src)
+	{
+		*this = src;
+	}
 
-	// Default constructor
-    ConfirmationSender::ConfirmationSender() : m_reservations(nullptr), m_count(0) {}
+	ConfirmationSender& ConfirmationSender::operator=(const ConfirmationSender& src)
+	{
+		// 1. check for self-assignment (and NOTHING else)
+		if (this != &src)
+		{
+			// 2. clean up (deallocate previously allocated dynamic memory)
+			delete[] m_reservations;
+			// 3. shallow copy (copy non-resource variables)
+			m_cnt = src.m_cnt;
+			// 4. deep copy (copy the resource)
+			if (m_cnt > 0)
+			{
+				// 4.1 allocate new dynamic memory, if needed
+				m_reservations = new const Reservation * [m_cnt];
+				// 4.2 copy the resource data
+				for (size_t i = 0; i < m_cnt; i++)
+				{
+					m_reservations[i] = src.m_reservations[i];
+				}
+			}
+			else
+			{
+				m_reservations = nullptr;
+			}
+		}
+		return *this;
+	}
 
-	// Copy constructor
-	// Calls the copy assignment operator to copy the data from the source object to the current object
-    ConfirmationSender::ConfirmationSender(const ConfirmationSender& other) {
-        *this = other;
-    }
-
-	// Copy assignment operator
-	// Copies the data from the source object to the current object
-    ConfirmationSender& ConfirmationSender::operator=(const ConfirmationSender& other) {
-        if (this != &other) {
-            delete[] m_reservations;
-            m_count = other.m_count;
-            if (m_count > 0)
-            {
-                m_reservations = new const Reservation * [m_count];
-                for (size_t i = 0; i < m_count; ++i) {
-                    m_reservations[i] = other.m_reservations[i];
-                }
-            }
-            else
-            {
-                m_reservations = nullptr;
-            }
-        }
-        return *this;
-    }
-
-	// Move constructor
-	// Calls the move assignment operator to move the data from the source object to the current object
-    ConfirmationSender::ConfirmationSender(ConfirmationSender&& other) noexcept {
-		*this = std::move(other);
-    }
-
-	// Move assignment operator
-	// Moves the data from the source object to the current object
-    ConfirmationSender& ConfirmationSender::operator=(ConfirmationSender&& other) noexcept {
-        if (this != &other) {
-            delete[] m_reservations;
-            m_reservations = other.m_reservations;
-            m_count = other.m_count;
-            other.m_reservations = nullptr;
-            other.m_count = 0;
-        }
-        return *this;
-    }
-
-	// Destructor
-    ConfirmationSender::~ConfirmationSender() {
-        delete[] m_reservations;
+	ConfirmationSender::ConfirmationSender(ConfirmationSender&& src) noexcept
+	{
+		*this = move(src);
+	}
+	ConfirmationSender& ConfirmationSender::operator=(ConfirmationSender&& src) noexcept
+	{
+		// 1. check for self-assignment (and NOTHING else)
+		if (this != &src)
+		{
+			// 2. clean up (deallocate previously allocated dynamic memory)
+			delete[] m_reservations;
+			// 3. shallow copy (copy non-resource variables)
+			m_cnt = src.m_cnt;
+			// 4. move the resource
+			m_reservations = src.m_reservations;
+			src.m_reservations = nullptr;
+			src.m_cnt = 0;
+		}
+		return *this;
+	}
+	ConfirmationSender::~ConfirmationSender()
+	{
+		delete[] m_reservations;
 		m_reservations = nullptr;
-    }
-
-	// overloaded operator+=
-	// adds the reservation to the list of reservations
-    ConfirmationSender& ConfirmationSender::operator+=(const Reservation& res) {
-        bool found = false;
-        for (size_t i = 0; i < m_count; ++i) {
-            if (m_reservations[i] == &res) {
-                found = true;
-                break;
-            }
-        }
-
-        if (!found) {
-            const Reservation** temp = new const Reservation * [m_count + 1];
-            for (size_t i = 0; i < m_count; ++i) {
-                temp[i] = m_reservations[i];
-            }
-            temp[m_count] = &res;
-            delete[] m_reservations;
-            m_reservations = temp;
-            ++m_count;
-        }
-
-        return *this;
-    }
-
-	// overloaded operator-=
-	// removes the reservation from the list of reservations
-    ConfirmationSender& ConfirmationSender::operator-=(const Reservation& res) {
-        for (size_t i = 0; i < m_count; ++i) {
-            if (m_reservations[i] == &res) {
-                m_reservations[i] = nullptr;
-                const Reservation** temp = new const Reservation * [m_count - 1];
-                size_t index = 0;
-                for (size_t j = 0; j < m_count; ++j) {
-                    if (m_reservations[j] != nullptr) {
-                        temp[index++] = m_reservations[j];
-                    }
-                }
-                delete[] m_reservations;
-                m_reservations = temp;
-                --m_count;
-                break;
-            }
-        }
-        return *this;
-    }
-
-	// overloaded operator<<
-	// displays the list of reservations
-    std::ostream& operator<<(std::ostream& os, const ConfirmationSender& sender) {
-        os << "--------------------------" << std::endl;
-        os << "Confirmations to Send" << std::endl;
-        os << "--------------------------" << std::endl;
-
-        if (sender.m_count == 0) {
-            os << "There are no confirmations to send!" << std::endl;
-        }
-        else {
-            for (size_t i = 0; i < sender.m_count; ++i) {
-                os << *sender.m_reservations[i];
-            }
-        }
-
-        os << "--------------------------" << std::endl;
-
-        return os;
-    }
-
+	}
+	ConfirmationSender& ConfirmationSender::operator+=(const Reservation& res)
+	{
+		bool found = false;
+		for (size_t i = 0; i < m_cnt && !found; i++)
+		{
+			if (m_reservations[i] == &res)
+			{
+				found = true;
+			}
+		}
+		if (!found)
+		{
+			const Reservation** temp = new const Reservation * [m_cnt + 1];
+			for (size_t i = 0; i < m_cnt; i++)
+			{
+				temp[i] = m_reservations[i];
+			}
+			temp[m_cnt] = &res;
+			delete[] m_reservations;
+			m_reservations = temp;
+			m_cnt++;
+			temp = nullptr;
+		}
+		return *this;
+	}
+	ConfirmationSender& ConfirmationSender::operator-=(const Reservation& res)
+	{
+		for (size_t i = 0; i < m_cnt; i++)
+		{
+			if (m_reservations[i] == &res)
+			{
+				const Reservation** temp = new const Reservation * [m_cnt - 1];
+				for (size_t j = 0; j < i; j++)
+				{
+					temp[j] = m_reservations[j];
+				}
+				for (size_t j = i; j < m_cnt - 1; j++)
+				{
+					temp[j] = m_reservations[j + 1];
+				}
+				delete[] m_reservations;
+				m_reservations = temp;
+				m_cnt--;
+				temp = nullptr;
+				break;
+			}
+		}
+		return *this;
+	}
+	std::ostream& operator<<(std::ostream& os, const ConfirmationSender& sender)
+	{
+		os << "--------------------------" << endl;
+		os << "Confirmations to Send" << endl;
+		os << "--------------------------" << endl;
+		if (sender.m_cnt == 0)
+		{
+			os << "There are no confirmations to send!" << endl;
+		}
+		else
+		{
+			for (size_t i = 0; i < sender.m_cnt; i++)
+			{
+				os << *sender.m_reservations[i];
+			}
+		}
+		os << "--------------------------" << endl;
+		return os;
+	}
 }

@@ -10,21 +10,16 @@ I only copied the code that my professor provided to complete my
 workshops and assignments. This submitted piece of work has not
 been shared with any other student or 3rd party contenppt provider.
 *****************************************************************/
-#include "Restaurant.h" 
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <iomanip>
+#include "Restaurant.h"
+using namespace std;
+
 namespace seneca {
-	// Default constructor
-	// Initializes the member variables to safe empty state
-	Restaurant::Restaurant() : m_reservations{ nullptr }, m_count{ 0 } {}
 
-	// Copy constructor
-	// Calls the copy assignment operator to copy the data from the source object to the current object
-	Restaurant::Restaurant(Restaurant& other) {
-		*this = other;
-	}
-
-	// Constructor with 2 arguments
-	// Initializes the member variables with the data provided
-	Restaurant::Restaurant(const Reservation* reservations[], size_t cnt) : m_reservations{ nullptr }, m_count{ 0 } {
+	Restaurant::Restaurant(const Reservation* reservations[], size_t cnt)
+	{
 		if (cnt > 0) {
 			m_count = cnt;
 			m_reservations = new const Reservation * [m_count];
@@ -34,21 +29,43 @@ namespace seneca {
 		}
 	}
 
-	// Copy assignment operator
-	// Copies the data from the source object to the current object
-	Restaurant& Restaurant::operator=(Restaurant& other)
+	Restaurant::Restaurant(const Restaurant& src)
 	{
-		if (this != &other)
+		*this = src;
+	}
+
+	Restaurant::Restaurant(Restaurant&& src) noexcept
+	{
+		*this = move(src);
+	}
+
+	Restaurant::~Restaurant()
+	{
+		for (size_t i = 0; i < m_count; ++i) {
+			delete m_reservations[i]; // Delete each dynamically allocated Reservation
+		}
+		delete[] m_reservations; // Delete the array of pointers
+	}
+
+	Restaurant& Restaurant::operator=(const Restaurant& src)
+	{
+		// 1. check for self-assignment (and NOTHING else)
+		if (this != &src)
 		{
+			// 2. clean up (deallocate previously allocated dynamic memory)
 			for (size_t i = 0; i < m_count; ++i) {
-				delete m_reservations[i];
+				delete m_reservations[i]; // Delete each dynamically allocated Reservation
 			}
 			delete[] m_reservations;
-			m_count = other.m_count;
-			if (other.m_count > 0) {
+			// 3. shallow copy (copy non-resource variables)
+			m_count = src.m_count;
+			// 4. deep copy (copy the resource)
+			if (src.m_count > 0) {
+				// 4.1 allocate new dynamic memory, if needed
 				m_reservations = new const Reservation * [m_count];
+				// 4.2 copy the resource data
 				for (size_t i = 0; i < m_count; i++) {
-					m_reservations[i] = new Reservation(*other.m_reservations[i]);
+					m_reservations[i] = new Reservation(*src.m_reservations[i]);
 				}
 			}
 			else {
@@ -57,61 +74,47 @@ namespace seneca {
 		}
 		return *this;
 	}
-	
-	// Move constructor
-	// Calls the move assignment operator to move the data from the source object to the current object
-	Restaurant::Restaurant(Restaurant&& other) noexcept {
-		*this = std::move(other);
-	}
 
-	// Move assignment operator
-	// Moves the data from the source object to the current object and nullifies the source object
-	Restaurant& Restaurant::operator=(Restaurant&& other) noexcept {
-		if (this != &other) {
+	Restaurant& Restaurant::operator=(Restaurant&& src) noexcept
+	{
+		// 1. check for self-assignment (and NOTHING else)
+		if (this != &src)
+		{
+			// 2. clean up (deallocate previously allocated dynamic memory)
 			for (size_t i = 0; i < m_count; ++i) {
-				delete m_reservations[i];
+				delete m_reservations[i]; // Delete each dynamically allocated Reservation
 			}
 			delete[] m_reservations;
-
-			m_reservations = other.m_reservations;
-			m_count = other.m_count;
-
-			other.m_reservations = nullptr;
-			other.m_count = 0;
+			// 3. shallow copy (copy non-resource variables)
+			m_count = src.m_count;
+			// 4. move the resource
+			m_reservations = src.m_reservations;
+			src.m_reservations = nullptr;
+			src.m_count = 0;
 		}
 		return *this;
 	}
 
-	// Destructor
-	// Deallocates the memory allocated for the reservations
-	Restaurant::~Restaurant() {
-		for (size_t i = 0; i < m_count; ++i) {
-			delete m_reservations[i];
-		}
-		delete[] m_reservations;
+	size_t Restaurant::size() const
+	{
+		return m_count;
 	}
-
-	// Overloaded insertion operator
-	// Inserts the data of the restaurant object into the output stream
-	std::ostream& operator<<(std::ostream& os, const Restaurant& restaurant) {
-		static size_t call_count = 0;
-		++call_count;
-
-		os << "--------------------------" << std::endl;
-		os << "Fancy Restaurant (" << call_count << ")" << std::endl;
-		os << "--------------------------" << std::endl;
-
-		if (restaurant.m_count == 0) {
-			os << "This restaurant is empty!" << std::endl;
+	std::ostream& operator<<(std::ostream& os, const Restaurant& res)
+	{
+		static size_t CALL_CNT = 0;
+		++CALL_CNT;
+		os << "--------------------------" << endl;
+		os << "Fancy Restaurant (" << CALL_CNT << ")" << endl;
+		os << "--------------------------" << endl;
+		if (res.m_count == 0) {
+			os << "This restaurant is empty!" << endl;
 		}
 		else {
-			for (size_t i = 0; i < restaurant.m_count; ++i) {
-				os << *restaurant.m_reservations[i];
+			for (size_t i = 0; i < res.m_count; i++) {
+				os << *res.m_reservations[i];
 			}
 		}
-
-		os << "--------------------------" << std::endl;
-
+		os << "--------------------------" << endl;
 		return os;
 	}
 }
