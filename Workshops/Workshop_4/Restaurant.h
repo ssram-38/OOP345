@@ -16,12 +16,10 @@ been shared with any other student or 3rd party contenppt provider.
 #define SENECA_RESTAURANT_H
 
 #include "Reservation.h"
-#include <iostream>
 
 namespace seneca {
 	class Restaurant {
-		Reservation** m_reservations;
-		size_t m_size;
+		const Reservation** m_reservations;
 		size_t m_count;
 	public:
 		Restaurant();
@@ -31,6 +29,7 @@ namespace seneca {
 		Restaurant(Restaurant&& other) noexcept;
 		Restaurant& operator=(Restaurant&& other) noexcept;
 		~Restaurant();
+		size_t size() const;
 		friend std::ostream& operator<<(std::ostream& os, const Restaurant& restaurant);
 	};
 }

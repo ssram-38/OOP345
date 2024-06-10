@@ -12,19 +12,23 @@ been shared with any other student or 3rd party content provider.
 *****************************************************************/
 
 #define _CRT_SECURE_NO_WARNINGS
-#include "Reservation.h"
+#include <iostream>
 #include <iomanip>
-#include <algorithm>
+#include <string>
+#include <cstring>
+#include "Reservation.h"
 
 namespace seneca {
+
     // Default constructor
     Reservation::Reservation() : m_id{ nullptr }, m_name{ '\0' }, m_email{ '\0' }, m_partysize{ 0 }, m_day{ 0 }, m_hour{ 0 } {}
 
     // trim function
     std::string Reservation::trim(const std::string& str) {
-        auto start = std::find_if_not(str.begin(), str.end(), ::isspace);
-        auto end = std::find_if_not(str.rbegin(), str.rend(), ::isspace).base();
-        return (start < end) ? std::string(start, end) : std::string();
+        size_t first_non_space = str.find_first_not_of(' ');
+        size_t last_non_space = str.find_last_not_of(' ');
+
+        return str.substr(first_non_space, last_non_space - first_non_space + 1);
     }
 
     // Constructor with 1 argument
@@ -55,11 +59,13 @@ namespace seneca {
     }
 
     // Copy constructor
+	// Calls the copy assignment operator to copy the data from the source object to the current object
     Reservation::Reservation(const Reservation& other) {
 		*this = other;
     }
 
     // Copy assignment operator
+	// Copies the data from the source object to the current object
     Reservation& Reservation::operator=(const Reservation& other) {
         if (this != &other) {
             delete[] m_id;
@@ -80,11 +86,13 @@ namespace seneca {
     }
 
     // Move constructor
+	// Calls the move assignment operator to move the data from the source object to the current object
     Reservation::Reservation(Reservation&& other) noexcept {
 		*this = std::move(other);
     }
 
     // Move assignment operator
+	// Moves the data from the source object to the current object
     Reservation& Reservation::operator=(Reservation&& other) noexcept {
         if (this != &other) {
             delete[] m_id;
@@ -105,6 +113,7 @@ namespace seneca {
     }
 
     // update function
+	// updates the day and time of the reservation
     void Reservation::update(int day, int time) {
         m_day = day;
         m_hour = time;

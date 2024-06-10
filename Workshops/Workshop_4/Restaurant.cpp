@@ -14,7 +14,7 @@ been shared with any other student or 3rd party contenppt provider.
 namespace seneca {
 	// Default constructor
 	// Initializes the member variables to safe empty state
-	Restaurant::Restaurant() : m_reservations{ nullptr }, m_size{ 0 }, m_count{ 0 } {}
+	Restaurant::Restaurant() : m_reservations{ nullptr }, m_count{ 0 } {}
 
 	// Copy constructor
 	// Calls the copy assignment operator to copy the data from the source object to the current object
@@ -24,13 +24,13 @@ namespace seneca {
 
 	// Constructor with 2 arguments
 	// Initializes the member variables with the data provided
-	Restaurant::Restaurant(const Reservation* reservations[], size_t cnt) : m_reservations{ nullptr }, m_size{ 0 }, m_count{ 0 } {
-		m_size = cnt;
-		m_count = 0;
-		m_reservations = new Reservation * [m_size];
-		for (size_t i = 0; i < m_size; i++) {
-			m_reservations[i] = new Reservation(*reservations[i]);
-			m_count++;
+	Restaurant::Restaurant(const Reservation* reservations[], size_t cnt) : m_reservations{ nullptr }, m_count{ 0 } {
+		if (cnt > 0) {
+			m_count = cnt;
+			m_reservations = new const Reservation * [m_count];
+			for (size_t i = 0; i < m_count; i++) {
+				this->m_reservations[i] = new Reservation(*reservations[i]);
+			}
 		}
 	}
 
@@ -40,13 +40,13 @@ namespace seneca {
 	{
 		if (this != &other)
 		{
-			for (size_t i = 0; i < m_size; ++i) {
+			for (size_t i = 0; i < m_count; ++i) {
 				delete m_reservations[i];
 			}
 			delete[] m_reservations;
 			m_count = other.m_count;
 			if (other.m_count > 0) {
-				m_reservations = new Reservation * [m_count];
+				m_reservations = new const Reservation * [m_count];
 				for (size_t i = 0; i < m_count; i++) {
 					m_reservations[i] = new Reservation(*other.m_reservations[i]);
 				}
@@ -68,17 +68,15 @@ namespace seneca {
 	// Moves the data from the source object to the current object and nullifies the source object
 	Restaurant& Restaurant::operator=(Restaurant&& other) noexcept {
 		if (this != &other) {
-			for (size_t i = 0; i < m_size; ++i) {
+			for (size_t i = 0; i < m_count; ++i) {
 				delete m_reservations[i];
 			}
 			delete[] m_reservations;
 
 			m_reservations = other.m_reservations;
-			m_size = other.m_size;
 			m_count = other.m_count;
 
 			other.m_reservations = nullptr;
-			other.m_size = 0;
 			other.m_count = 0;
 		}
 		return *this;
@@ -87,7 +85,7 @@ namespace seneca {
 	// Destructor
 	// Deallocates the memory allocated for the reservations
 	Restaurant::~Restaurant() {
-		for (size_t i = 0; i < m_size; ++i) {
+		for (size_t i = 0; i < m_count; ++i) {
 			delete m_reservations[i];
 		}
 		delete[] m_reservations;
@@ -96,7 +94,7 @@ namespace seneca {
 	// Overloaded insertion operator
 	// Inserts the data of the restaurant object into the output stream
 	std::ostream& operator<<(std::ostream& os, const Restaurant& restaurant) {
-		static int call_count = 0;
+		static size_t call_count = 0;
 		++call_count;
 
 		os << "--------------------------" << std::endl;
