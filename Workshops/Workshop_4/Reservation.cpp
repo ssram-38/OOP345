@@ -21,33 +21,31 @@ using namespace std;
 
 namespace seneca {
 
+	// Trim the leading and trailing spaces from a string
 	std::string trim(const std::string& str) {
-		// Find the position of the first non-space character from the beginning
 		size_t first_non_space = str.find_first_not_of(' ');
-		// Find the position of the last non-space character from the end
 		size_t last_non_space = str.find_last_not_of(' ');
 
-		// Extract the substring containing non-space characters only
 		return str.substr(first_non_space, last_non_space - first_non_space + 1);
 	}
 
-	Reservation::Reservation(const std::string& res)
-	{
-		// Extracting information from the string
+	// 1 parameter constructor
+	// Extracts the reservation ID, name, email, number of people, day, and hour from the string
+	Reservation::Reservation(const std::string& res){
 		size_t idPos = res.find(':');
-		std::string idString = res.substr(0, idPos); // Extract the ID string
-		idString = trim(idString); // Trim any leading or trailing spaces (optional)
-		m_reservationId = new char[idString.length() + 1]; // Allocate memory for ID
-		strcpy(m_reservationId, idString.c_str()); // Copy ID string to m_reservationId
+		std::string idString = res.substr(0, idPos);		// Extract the ID string
+		idString = trim(idString);							// Trim any leading or trailing spaces (optional)
+		m_reservationId = new char[idString.length() + 1];	// Allocate memory for ID
+		strcpy(m_reservationId, idString.c_str());			// Copy ID string to m_reservationId
 
 		size_t commaPos1 = res.find(',', idPos + 1);
 		size_t commaPos2 = res.find(',', commaPos1 + 1);
 
 		std::string tempName = res.substr(idPos + 1, commaPos1 - idPos - 1);
-		m_name = trim(tempName); // Trim any leading or trailing spaces
+		m_name = trim(tempName);
 
 		std::string tempEmail = res.substr(commaPos1 + 1, commaPos2 - commaPos1 - 1);
-		m_email = trim(tempEmail); // Trim any leading or trailing spaces
+		m_email = trim(tempEmail);
 
 		size_t numOfPeoplePos = res.find(',', commaPos2 + 1);
 		m_numOfPeople = std::stoi(res.substr(commaPos2 + 1, numOfPeoplePos - commaPos2 - 1));
@@ -59,38 +57,42 @@ namespace seneca {
 		m_hour = std::stoi(res.substr(dayPos + 1, hourPos - dayPos - 1));
 	}
 
+	// Copy constructor
+	// Copies the data from the source object to the current object
 	Reservation::Reservation(const Reservation& src)
 	{
 		*this = src;
 	}
+
+	// Move constructor
+	// Moves the data from the source object to the current object
 	Reservation::Reservation(Reservation&& src) noexcept
 	{
 		*this = move(src);
 	}
+
+	// Destructor
 	Reservation::~Reservation()
 	{
 		delete[] m_reservationId;
 		m_reservationId = nullptr;
 	}
+
+	// Copy assignment operator
+	// Copies the data from the source object to the current object
 	Reservation& Reservation::operator=(const Reservation& src)
 	{
-		// 1. check for self-assignment
 		if (this != &src)
 		{
-			// 2. clean-up the resource used by the current instance
 			delete[] m_reservationId;
-			// 3. shallow copy
 			m_name = src.m_name;
 			m_email = src.m_email;
 			m_numOfPeople = src.m_numOfPeople;
 			m_day = src.m_day;
 			m_hour = src.m_hour;
-			// 4. deep copy (copy the resource)
 			if (src.m_reservationId != nullptr)
 			{
-				// 4.1 allocate new dynamic memory, if needed
 				m_reservationId = new char[strlen(src.m_reservationId) + 1];
-				// 4.2 copy the resource data
 				strcpy(m_reservationId, src.m_reservationId);
 			}
 			else
@@ -100,30 +102,31 @@ namespace seneca {
 		}
 		return *this;
 	}
+
+	// Move assignment operator
 	Reservation& Reservation::operator=(Reservation&& src) noexcept
 	{
-		// 1. check for self-assignment
 		if (this != &src)
 		{
-			// 2. clean-up the resource used by the current instance
 			delete[] m_reservationId;
-			// 3. shallow copy
 			m_name = src.m_name;
 			m_email = src.m_email;
 			m_numOfPeople = src.m_numOfPeople;
 			m_day = src.m_day;
 			m_hour = src.m_hour;
-			// 4. move the resource
 			m_reservationId = src.m_reservationId;
-			src.m_reservationId = nullptr; // he parameter doesn't have the resource anymore so the destructor won't delete it
+			src.m_reservationId = nullptr;
 		}
 		return *this;
 	}
+
+	// Updates the day and time of the reservation
 	void Reservation::update(int day, int time)
 	{
 		m_day = day;
 		m_hour = time;
 	}
+
 	void Reservation::display(std::ostream& os) const
 	{
 		os << "   ";
@@ -146,6 +149,9 @@ namespace seneca {
 		else
 			os << " people." << std::endl;
 	}
+
+	// Overloaded insertion operator
+	// Inserts the reservation data into the output stream
 	std::ostream& operator<<(std::ostream& os, const Reservation& src)
 	{
 		os << "Reservation "

@@ -18,26 +18,24 @@ using namespace std;
 
 
 namespace seneca {
+	// Copy Constructor
+	// Calls the copy assignment operator
 	ConfirmationSender::ConfirmationSender(const ConfirmationSender& src)
 	{
 		*this = src;
 	}
 
+	// Copy Assignment Operator
+	// Copies the data from the source object to the current object
 	ConfirmationSender& ConfirmationSender::operator=(const ConfirmationSender& src)
 	{
-		// 1. check for self-assignment (and NOTHING else)
 		if (this != &src)
 		{
-			// 2. clean up (deallocate previously allocated dynamic memory)
 			delete[] m_reservations;
-			// 3. shallow copy (copy non-resource variables)
 			m_cnt = src.m_cnt;
-			// 4. deep copy (copy the resource)
 			if (m_cnt > 0)
 			{
-				// 4.1 allocate new dynamic memory, if needed
 				m_reservations = new const Reservation * [m_cnt];
-				// 4.2 copy the resource data
 				for (size_t i = 0; i < m_cnt; i++)
 				{
 					m_reservations[i] = src.m_reservations[i];
@@ -51,31 +49,37 @@ namespace seneca {
 		return *this;
 	}
 
+	// Move Constructor
+	// Calls the move assignment operator
 	ConfirmationSender::ConfirmationSender(ConfirmationSender&& src) noexcept
 	{
 		*this = move(src);
 	}
+
+	// Move Assignment Operator
+	// Moves the data from the source object to the current object
 	ConfirmationSender& ConfirmationSender::operator=(ConfirmationSender&& src) noexcept
 	{
-		// 1. check for self-assignment (and NOTHING else)
 		if (this != &src)
 		{
-			// 2. clean up (deallocate previously allocated dynamic memory)
 			delete[] m_reservations;
-			// 3. shallow copy (copy non-resource variables)
 			m_cnt = src.m_cnt;
-			// 4. move the resource
 			m_reservations = src.m_reservations;
 			src.m_reservations = nullptr;
 			src.m_cnt = 0;
 		}
 		return *this;
 	}
+
+	// Destructor
+	// Deallocates the memory
 	ConfirmationSender::~ConfirmationSender()
 	{
 		delete[] m_reservations;
 		m_reservations = nullptr;
 	}
+
+	// Adds the reservation to the array of reservations
 	ConfirmationSender& ConfirmationSender::operator+=(const Reservation& res)
 	{
 		bool found = false;
@@ -101,6 +105,8 @@ namespace seneca {
 		}
 		return *this;
 	}
+
+	// Removes the reservation from the array of reservations
 	ConfirmationSender& ConfirmationSender::operator-=(const Reservation& res)
 	{
 		for (size_t i = 0; i < m_cnt; i++)
@@ -125,6 +131,8 @@ namespace seneca {
 		}
 		return *this;
 	}
+
+	// Displays the reservations
 	std::ostream& operator<<(std::ostream& os, const ConfirmationSender& sender)
 	{
 		os << "--------------------------" << endl;
