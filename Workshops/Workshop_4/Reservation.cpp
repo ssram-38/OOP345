@@ -11,55 +11,104 @@ workshops and assignments. This submitted piece of work has not
 been shared with any other student or 3rd party content provider.
 *****************************************************************/
 
+#define _CRT_SECURE_NO_WARNINGS
 #include "Reservation.h"
 #include <iomanip>
 #include <algorithm>
 
 namespace seneca {
-	// Default constructor
-// Initializes the member variables to safe empty state
-	Reservation::Reservation() : m_id{ '\0' }, m_name{ '\0' }, m_email{ '\0' }, m_partysize{ 0 }, m_day{ 0 }, m_hour{ 0 } {};
+    // Default constructor
+    Reservation::Reservation() : m_id{ nullptr }, m_name{ '\0' }, m_email{ '\0' }, m_partysize{ 0 }, m_day{ 0 }, m_hour{ 0 } {}
 
-	// update function
-	// updates the day and time of the reservation
-	void Reservation::update(int day, int time) {
-		m_day = day;
-		m_hour = time;
-	}
+    // trim function
+    std::string Reservation::trim(const std::string& str) {
+        auto start = std::find_if_not(str.begin(), str.end(), ::isspace);
+        auto end = std::find_if_not(str.rbegin(), str.rend(), ::isspace).base();
+        return (start < end) ? std::string(start, end) : std::string();
+    }
 
-	// trim function
-	// trims the white spaces from the string
-	std::string Reservation::trim(const std::string& str) {
-		auto start = std::find_if_not(str.begin(), str.end(), ::isspace);
-		auto end = std::find_if_not(str.rbegin(), str.rend(), ::isspace).base();
-		return (start < end) ? std::string(start, end) : std::string();
-	}
+    // Constructor with 1 argument
+    Reservation::Reservation(const std::string& res) {
+        size_t idPos = res.find(':');
+        std::string idString = res.substr(0, idPos);
+        idString = trim(idString);
+        m_id = new char[idString.length() + 1];
+        strcpy(m_id, idString.c_str());
 
-	// Constructor with 1 argument
-	// Initializes the member variables with the data provided
-	Reservation::Reservation(const std::string& res) {
-		// copy the string to temp
-		// get the id and remove it from the string and remove the white spaces
-		std::string temp = res;
+        size_t commaPos1 = res.find(',', idPos + 1);
+        size_t commaPos2 = res.find(',', commaPos1 + 1);
 
-		m_id = trim(temp.substr(0, temp.find(':')));
-		temp.erase(0, temp.find(':') + 1);
+        std::string tempName = res.substr(idPos + 1, commaPos1 - idPos - 1);
+        m_name = trim(tempName);
 
-		m_name = trim(temp.substr(0, temp.find(',')));
-		temp.erase(0, temp.find(',') + 1);
+        std::string tempEmail = res.substr(commaPos1 + 1, commaPos2 - commaPos1 - 1);
+        m_email = trim(tempEmail);
 
-		m_email = trim(temp.substr(0, temp.find(',')));
-		temp.erase(0, temp.find(',') + 1);
+        size_t numOfPeoplePos = res.find(',', commaPos2 + 1);
+        m_partysize = std::stoi(res.substr(commaPos2 + 1, numOfPeoplePos - commaPos2 - 1));
 
-		m_partysize = std::stoi(trim(temp.substr(0, temp.find(','))));
-		temp.erase(0, temp.find(',') + 1);
+        size_t dayPos = res.find(',', numOfPeoplePos + 1);
+        m_day = std::stoi(res.substr(numOfPeoplePos + 1, dayPos - numOfPeoplePos - 1));
 
-		m_day = std::stoi(trim(temp.substr(0, temp.find(','))));
-		temp.erase(0, temp.find(',') + 1);
+        size_t hourPos = res.find(',', dayPos + 1);
+        m_hour = std::stoi(res.substr(dayPos + 1, hourPos - dayPos - 1));
+    }
 
-		m_hour = std::stoi(trim(temp.substr(0, temp.find(','))));
+    // Copy constructor
+    Reservation::Reservation(const Reservation& other) {
+		*this = other;
+    }
 
-	}
+    // Copy assignment operator
+    Reservation& Reservation::operator=(const Reservation& other) {
+        if (this != &other) {
+            delete[] m_id;
+            if (other.m_id != nullptr) {
+                m_id = new char[strlen(other.m_id) + 1];
+                strcpy(m_id, other.m_id);
+            }
+            else {
+                m_id = nullptr;
+            }
+            m_name = other.m_name;
+            m_email = other.m_email;
+            m_partysize = other.m_partysize;
+            m_day = other.m_day;
+            m_hour = other.m_hour;
+        }
+        return *this;
+    }
+
+    // Move constructor
+    Reservation::Reservation(Reservation&& other) noexcept {
+		*this = std::move(other);
+    }
+
+    // Move assignment operator
+    Reservation& Reservation::operator=(Reservation&& other) noexcept {
+        if (this != &other) {
+            delete[] m_id;
+            m_id = other.m_id;
+            other.m_id = nullptr;
+            m_name = other.m_name;
+            m_email = other.m_email;
+            m_partysize = other.m_partysize;
+            m_day = other.m_day;
+            m_hour = other.m_hour;
+        }
+        return *this;
+    }
+
+    // Destructor
+    Reservation::~Reservation() {
+        delete[] m_id;
+    }
+
+    // update function
+    void Reservation::update(int day, int time) {
+        m_day = day;
+        m_hour = time;
+    }
 
 	// overloaded operator<<
 	// displays the reservation details

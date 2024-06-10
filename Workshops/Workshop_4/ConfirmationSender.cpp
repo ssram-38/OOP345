@@ -31,9 +31,16 @@ namespace seneca {
         if (this != &other) {
             delete[] m_reservations;
             m_count = other.m_count;
-            m_reservations = new const Reservation * [m_count];
-            for (size_t i = 0; i < m_count; ++i) {
-                m_reservations[i] = other.m_reservations[i];
+            if (m_count > 0)
+            {
+                m_reservations = new const Reservation * [m_count];
+                for (size_t i = 0; i < m_count; ++i) {
+                    m_reservations[i] = other.m_reservations[i];
+                }
+            }
+            else
+            {
+                m_reservations = nullptr;
             }
         }
         return *this;
@@ -61,6 +68,7 @@ namespace seneca {
 	// Destructor
     ConfirmationSender::~ConfirmationSender() {
         delete[] m_reservations;
+		m_reservations = nullptr;
     }
 
 	// overloaded operator+=
