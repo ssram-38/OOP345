@@ -20,7 +20,7 @@ namespace seneca{
 	class SpellChecker {
 		std::string m_badWords[6];
 		std::string m_goodWords[6];
-		int m_badWordsCount[6];
+		size_t m_badWordsCount[6];
 	public:
 		SpellChecker() : m_badWords{ "" }, m_goodWords{ "" }, m_badWordsCount{ 0 } {};
 		SpellChecker(const char* filename);

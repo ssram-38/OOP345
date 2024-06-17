@@ -19,6 +19,7 @@ been shared with any other student or 3rd party contenppt provider.
 #include <string>
 
 namespace seneca {
+	// Templated collection class
 	template <typename T>
 	class Collection {
 		std::string m_name;
@@ -26,23 +27,46 @@ namespace seneca {
 		size_t m_size;
 		void (*m_observer)(const Collection<T>&, const T&);
 	public:
+		// Constructor
 		Collection(const std::string& name) : m_name{ name }, m_items{ nullptr }, m_size{ 0 }, m_observer{ nullptr } {};
+		// Copy and move operations are deleted
 		Collection(const Collection& src) = delete;
 		Collection(Collection&& src) = delete;
 		Collection& operator=(Collection&& src) = delete;
 		Collection& operator=(const Collection& src) = delete;
+
+		// Destructor
+		// @brief Deletes the dynamically allocated memory
 		~Collection() {
 			delete[] m_items;
 		}
+
+		// Query functions
+
+		// @brief Returns the name of the collection
+		// @param none
+		// @return const std::string&
 		const std::string& name() const {
 			return m_name;
 		}
+
+		// @brief Returns the number of items in the collection
+		// @param none
+		// @return size_t
 		size_t size() const {
 			return m_size;
 		}
+
+		// @brief Sets the observer function
+		// @param void (*observer)(const Collection<T>&, const T&)
+		// @return void
 		void setObserver(void (*observer)(const Collection<T>&, const T&)) {
 			m_observer = observer;
 		}
+
+		// @brief Adds an item to the collection
+		// @param const T&
+		// @return Collection<T>&
 		Collection<T>& operator+=(const T& item) {
 			for (size_t i = 0; i < m_size; i++) {
 				if (m_items[i].title() == item.title()) {
@@ -64,6 +88,9 @@ namespace seneca {
 			return *this;
 		}
 
+		// @brief Returns the item from the specified index
+		// @param size_t
+		// @return T&
 		T& operator[](size_t idx) const {
 			if (idx >= m_size) {
 				std::string error_msg = "Bad index [" + std::to_string(idx) + "]. Collection has [" + std::to_string(m_size) + "] items.";
@@ -72,6 +99,9 @@ namespace seneca {
 			return m_items[idx];
 		}
 
+		// @brief Returns the item from the specified title
+		// @param const std::string&
+		// @return T*
 		T* operator[](const std::string& title) const {
 			for (size_t i = 0; i < m_size; i++) {
 				if (m_items[i].title() == title) {
@@ -80,6 +110,10 @@ namespace seneca {
 			}
 			return nullptr;
 		}
+
+		// @brief Overloaded operator<< to display the collection
+		// @param std::ostream&, const Collection&
+		// @return std::ostream&
 		friend std::ostream& operator<<(std::ostream& os, const Collection& collection) {
 			for (size_t i = 0; i < collection.size(); i++) {
 				os << collection[i];

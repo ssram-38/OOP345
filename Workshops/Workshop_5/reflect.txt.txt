@@ -1,0 +1,46 @@
+/*****************************************************************
+						Declaration
+Name       : Sarandip Sahota Ram
+Email      : ssram@myseneca.ca
+Student_ID : 106824238
+Date       : 16-06-2024
+
+I declare that this submission is the result of my own work and
+I only copied the code that my professor provided to complete my
+workshops and assignments. This submitted piece of work has not
+been shared with any other student or 3rd party content provider.
+*****************************************************************/
+
+A functor is a class or struct that overloads operator(), allowing 
+instances to be called like functions. They can store state and have
+member functions, making them useful for complex, configurable
+operations needing state maintenance.
+
+Lambda expressions are concise, inline anonymous functions.
+They are ideal for simple, throwaway tasks like callbacks or
+predicates in algorithms. Lambdas can capture local variables,
+making them convenient for brief operations where brevity and
+locality are important.
+
+The functors are used for complex, reusable operations needing state.
+And lambdas for short, inline tasks needing quick, local access.
+
+Using exceptions in C++ simplifies error handling in complex systems by
+allowing errors to propagate up the call stack until caught. This
+separation of error-handling from main logic makes the code cleaner
+and more readable. 
+
+To eliminate code duplication in the Movie and Book classes while loading data
+from files, you can introduce a common base class Media. This base class Media
+would define a method for loading data from a file, using virtual functions to
+ensure each derived class implements its specific data loading logic. Here’s how
+it would work: Media would include a virtual function loadData that accepts an
+std::ifstream parameter, which is implemented as a pure virtual function in Media. 
+This function will then be overridden by Movie and Book, which will carry out their
+respective processes
+
+The necessity of a default constructor for Movie and Book depends on whether it serves 
+a purpose in your program. If instances of Movie and Book can be meaningfully 
+constructed without any parameters, then a default constructor might be useful. 
+However, if the intention is to always initialize Movie and Book objects with specific
+data (like through a custom constructor), the default constructor could be unnecessary.
