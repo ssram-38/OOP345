@@ -23,7 +23,14 @@ namespace seneca {
 
 	//
 	void Directory::update_parent_path(const std::string& path) {
+		// Set the parent path for this directory
 		m_parent_path = path;
+
+		// Update the absolute path for each resource in this directory
+		for (auto* resource : m_contents) {
+			std::string new_path = m_parent_path + m_name;
+			resource->update_parent_path(new_path);
+		}
 	}
 
 	//
@@ -65,7 +72,7 @@ namespace seneca {
 		}
 
 		//
-		res->update_parent_path(m_parent_path);
+		res->update_parent_path(m_parent_path + m_name);
 		m_contents.push_back(res);
 
 		return *this;
@@ -139,13 +146,8 @@ namespace seneca {
 	}
 
 	void Directory::display(std::ostream& os, const std::vector<FormatFlags>& formatFlags) const {
-		// Calculate total size
 		size_t total_size = size();
-
-		// Display total size
 		os << "Total size: " << total_size << " bytes" << std::endl;
-
-		// Display each resource
 		for (const auto* resource : m_contents) {
 			if (resource->type() == NodeType::DIR) {
 				os << "D | ";
@@ -153,9 +155,7 @@ namespace seneca {
 			else {
 				os << "F | ";
 			}
-
 			os << std::left << std::setw(15) << resource->name() << " | ";
-
 			if (std::find(formatFlags.begin(), formatFlags.end(), FormatFlags::LONG) != formatFlags.end()) {
 				if (resource->type() == NodeType::DIR) {
 					os << std::right << std::setw(2) << dynamic_cast<const Directory*>(resource)->count() << " | ";
@@ -163,10 +163,11 @@ namespace seneca {
 				else {
 					os << "   | ";
 				}
-				os << std::right << std::setw(4) << resource->size() << " bytes" << " | ";
+				os << std::right << std::setw(4) << resource->size() << " bytes |";
+				std::string space = " ";
+				os << space;
 			}
-
-			os << " " << std::endl;
+			os << std::endl;
 		}
 	}
 

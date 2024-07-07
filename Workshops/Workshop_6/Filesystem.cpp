@@ -21,7 +21,7 @@ been shared with any other student or 3rd party contenppt provider.
 namespace seneca {
     Filesystem::Filesystem(std::string fileName, std::string root) {
         // Create root directory
-        m_root = new Directory(root.empty() ? "/" : root);
+        m_root = new Directory(root);
         m_current = m_root;
 
         // Open the file
