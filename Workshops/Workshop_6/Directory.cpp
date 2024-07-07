@@ -163,9 +163,9 @@ namespace seneca {
 				else {
 					os << "   | ";
 				}
-				os << std::right << std::setw(4) << resource->size() << " bytes | " << std::endl;
+				os << std::right << std::setw(4) << resource->size() << " bytes |";
 			}
-
+			os << ' ' << std::endl;
 		}
 	}
 
