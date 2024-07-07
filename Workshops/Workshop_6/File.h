@@ -27,6 +27,7 @@ namespace seneca {
 		std::string name() const;
 		int count() const;
 		size_t size() const;
+		~File();
 	};
 }
 
