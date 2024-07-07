@@ -1,3 +1,4 @@
+#define _CRTDBG_MEM_ALLOC
 #include <iostream>
 #include <iomanip>
 #include <exception>
@@ -12,6 +13,7 @@
 #include "File.h" // intentional
 #include "Flags.h"
 #include "Flags.h" // intentional
+#include "crtdbg.h"
 
 int cout = 0; // won't compile if headers don't follow convention
 
@@ -28,6 +30,7 @@ void printHeader(std::string label) {
 }
 
 int main(int argc, char** argv) {
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
     std::cout << "Command Line:\n";
     std::cout << "--------------------------\n";
     for (int i = 0; i < argc; ++i)
