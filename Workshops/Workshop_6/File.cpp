@@ -50,6 +50,4 @@ namespace seneca {
 	size_t File::size() const {
 		return m_contents.size();
 	}
-
-	File::~File() = default;
 }

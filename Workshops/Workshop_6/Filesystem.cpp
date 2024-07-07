@@ -51,8 +51,8 @@ namespace seneca {
 
                     if (pathStream.eof()) {
                         // Last segment, this is the file name
-                        File newFile = File(segment, fileContent);
-                        *currentDir += &newFile;
+                        File* newFile = new File(segment, fileContent);
+                        *currentDir += newFile;
                     }
                     else {
                         // This is a directory
@@ -95,6 +95,7 @@ namespace seneca {
         }
 
         file.close();
+
     }
 
     Filesystem::Filesystem(Filesystem&& other) noexcept : m_root(other.m_root), m_current(other.m_current) {
