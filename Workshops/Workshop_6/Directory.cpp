@@ -160,10 +160,10 @@ namespace seneca {
 			// Check if LONG flag is set
 			if (std::find(formatFlags.begin(), formatFlags.end(), FormatFlags::LONG) != formatFlags.end()) {
 				if (resource->type() == NodeType::DIR) {
-					os << std::right << std::setw(2) << dynamic_cast<const Directory*>(resource)->count() << " | ";
+					os << std::right << std::setw(2) << dynamic_cast<const Directory*>(resource)->count() << "  | ";
 				}
 				else {
-					os << "   | ";
+					os << "    | ";
 				}
 				os << std::right << std::setw(5) << resource->size() << " bytes |"; // Adjusted setw to ensure proper alignment
 			}
