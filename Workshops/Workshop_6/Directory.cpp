@@ -165,7 +165,7 @@ namespace seneca {
 				else {
 					os << "   | ";
 				}
-				os << std::right << std::setw(5) << resource->size() << " bytes |";
+				os << std::right << std::setw(5) << resource->size() << " bytes |"; // Adjusted setw to ensure proper alignment
 			}
 
 			os << std::endl;  // Move to the next line
