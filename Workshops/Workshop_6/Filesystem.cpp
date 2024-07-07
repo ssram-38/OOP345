@@ -51,8 +51,8 @@ namespace seneca {
 
                     if (pathStream.eof()) {
                         // Last segment, this is the file name
-                        File* newFile = new File(segment, fileContent);
-                        *currentDir += newFile;
+                        File newFile = File(segment, fileContent);
+                        *currentDir += &newFile;
                     }
                     else {
                         // This is a directory
