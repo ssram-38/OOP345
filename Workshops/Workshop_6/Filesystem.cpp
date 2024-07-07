@@ -21,67 +21,43 @@ been shared with any other student or 3rd party contenppt provider.
 namespace seneca {
     Filesystem::Filesystem(std::string fileName, std::string root) {
         // Create root directory
-        try {
-            m_root = new Directory(root);
-            m_current = m_root;
+        m_root = new Directory(root);
+        m_current = m_root;
 
-            // Open the file
-            std::ifstream file(fileName);
-            if (!file.is_open()) {
-                throw std::runtime_error("Could not open file");
-            }
+        // Open the file
+        std::ifstream file(fileName);
+        if (!file.is_open()) {
+            delete m_root;
+            throw std::runtime_error("Could not open file");
+        }
 
-            std::string line;
-            while (std::getline(file, line)) {
-                line = utils::trim(line);
+        std::string line;
+        while (std::getline(file, line)) {
+            line = utils::trim(line);
 
-                // Check if the line contains file content
-                size_t separator_pos = line.find('|');
-                if (separator_pos != std::string::npos) {
-                    // This is a file
-                    std::string filePath = utils::trim(line.substr(0, separator_pos));
-                    std::string fileContent = utils::trim(line.substr(separator_pos + 1));
+            // Check if the line contains file content
+            size_t separator_pos = line.find('|');
+            if (separator_pos != std::string::npos) {
+                // This is a file
+                std::string filePath = utils::trim(line.substr(0, separator_pos));
+                std::string fileContent = utils::trim(line.substr(separator_pos + 1));
 
-                    std::istringstream pathStream(filePath);
-                    std::string segment;
-                    Directory* currentDir = m_root;
+                std::istringstream pathStream(filePath);
+                std::string segment;
+                Directory* currentDir = m_root;
 
-                    // Split the path and create directories
-                    while (std::getline(pathStream, segment, '/')) {
-                        segment = utils::trim(segment);
+                // Split the path and create directories
+                while (std::getline(pathStream, segment, '/')) {
+                    segment = utils::trim(segment);
 
-                        if (pathStream.eof()) {
-                            // Last segment, this is the file name
-                            File* newFile = new File(segment, fileContent);
-                            *currentDir += newFile;
-                        }
-                        else {
-                            // This is a directory
-                            segment += "/";
-                            Resource* foundDir = currentDir->find(segment);
-                            if (!foundDir) {
-                                Directory* newDir = new Directory(segment);
-                                *currentDir += newDir;
-                                currentDir = newDir;
-                            }
-                            else {
-                                currentDir = dynamic_cast<Directory*>(foundDir);
-                            }
-                        }
+                    if (pathStream.eof()) {
+                        // Last segment, this is the file name
+                        File* newFile = new File(segment, fileContent);
+                        *currentDir += newFile;
                     }
-                }
-                else {
-                    // This is a directory
-                    std::string dirPath = utils::trim(line);
-
-                    std::istringstream pathStream(dirPath);
-                    std::string segment;
-                    Directory* currentDir = m_root;
-
-                    // Split the path and create directories
-                    while (std::getline(pathStream, segment, '/')) {
-                        segment = utils::trim(segment) + "/";
-
+                    else {
+                        // This is a directory
+                        segment += "/";
                         Resource* foundDir = currentDir->find(segment);
                         if (!foundDir) {
                             Directory* newDir = new Directory(segment);
@@ -94,13 +70,33 @@ namespace seneca {
                     }
                 }
             }
+            else {
+                // This is a directory
+                std::string dirPath = utils::trim(line);
 
-            file.close();
+                std::istringstream pathStream(dirPath);
+                std::string segment;
+                Directory* currentDir = m_root;
+
+                // Split the path and create directories
+                while (std::getline(pathStream, segment, '/')) {
+                    segment = utils::trim(segment) + "/";
+
+                    Resource* foundDir = currentDir->find(segment);
+                    if (!foundDir) {
+                        Directory* newDir = new Directory(segment);
+                        *currentDir += newDir;
+                        currentDir = newDir;
+                    }
+                    else {
+                        currentDir = dynamic_cast<Directory*>(foundDir);
+                    }
+                }
+            }
         }
-        catch (...) {
-            delete m_root; // Deallocate memory if an exception occurs
-            throw; // Re-throw the exception
-        }
+
+        file.close();
+
     }
 
     Filesystem::Filesystem(Filesystem&& other) noexcept : m_root(other.m_root), m_current(other.m_current) {
