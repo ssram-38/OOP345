@@ -139,6 +139,7 @@ namespace seneca {
 
     Filesystem::~Filesystem() {
         delete m_root;
+        delete m_current;
     }
 
 }
