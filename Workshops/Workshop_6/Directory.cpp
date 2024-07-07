@@ -155,7 +155,7 @@ namespace seneca {
 			else {
 				os << "F | ";
 			}
-			os << std::left << std::setw(15) << resource->name() << " | ";
+			os << std::left << std::setw(15) << resource->name() << " |  ";
 			if (std::find(formatFlags.begin(), formatFlags.end(), FormatFlags::LONG) != formatFlags.end()) {
 				if (resource->type() == NodeType::DIR) {
 					os << std::right << std::setw(2) << dynamic_cast<const Directory*>(resource)->count() << " | ";
@@ -163,9 +163,9 @@ namespace seneca {
 				else {
 					os << "   | ";
 				}
-				os << std::right << std::setw(4) << resource->size() << " bytes |";
+				os << std::right << std::setw(4) << resource->size() << " bytes | ";
 			}
-			os << ' ' << std::endl;
+			os << std::endl;
 		}
 	}
 
