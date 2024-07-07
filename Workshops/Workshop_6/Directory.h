@@ -14,7 +14,9 @@ been shared with any other student or 3rd party contenppt provider.
 #ifndef SENECA_DIRECTORY_H
 #define SENECA_DIRECTORY_H
 
+#include <algorithm>
 #include <vector>
+#include <string>
 #include "Resource.h"
 
 namespace seneca {

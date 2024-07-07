@@ -113,6 +113,11 @@ namespace seneca {
         return *this;
     }
 
+    Filesystem& Filesystem::operator+=(Resource* res) {
+        *m_current += res;
+        return *this;
+    }
+
     Directory* Filesystem::change_directory(const std::string& newCurrentDir) {
         if (newCurrentDir.empty()) {
             m_current = m_root;

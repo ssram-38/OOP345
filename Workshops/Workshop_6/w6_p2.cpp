@@ -99,7 +99,7 @@ int main(int argc, char** argv) {
 
     elephant_image = dynamic_cast<seneca::File*>(working_dir->find("elephant.png", oflags));
 
-    std::cout <<"/images/pngs/elephant.png was found in fileystem" << std::endl;
+    std::cout << elephant_image->path() << " was found in fileystem" << std::endl;
 
     ::printLine();
 
