@@ -98,6 +98,7 @@ namespace seneca {
     }
 
     Filesystem::Filesystem(Filesystem&& other) noexcept : m_root(other.m_root), m_current(other.m_current) {
+        delete other.m_root;
         other.m_root = nullptr;
         other.m_current = nullptr;
     }
