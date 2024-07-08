@@ -1,0 +1,51 @@
+/*****************************************************************
+						Declaration
+Name       : Sarandip Sahota Ram
+Email      : ssram@myseneca.ca
+Student_ID : 106824238
+Date       : 03-07-2024
+
+I declare that this submission is the result of my own work and
+I only copied the code that my professor provided to complete my
+workshops and assignments. This submitted piece of work has not
+been shared with any other student or 3rd party contenppt provider.
+*****************************************************************/
+In this workshop i was able to practice using error handling,
+I got a better understating of Standard Library as i had to use components
+of the Library such as the sstream. Also i learned containers with using
+vector which are similar to arrays but allows you to store object where the
+vector can change in size, and ans they are stored in an ordered sequence.
+Additionally in the workshop i got a refresher on the file stream, class 
+inheritance, polymorphism and other older concepts.
+
+Why do you need to deallocate the dynamically allocated memory in your
+ vector of resources?
+
+In the workshop we manually allocated memory for these objects, deallocation
+of memory is crucial as we need to release the memory we used but no longer
+need, if this is not done the program will have memory leaks which will
+increase the amount of memory required by the program, this can slow down or
+crash the program. In this case raw pointer were used to dynamically allocate
+memory which need to be deallocated manually using the keyword "delete".
+When dealing with dynamic allocation with raw pointer, no matter where the
+dynamic allocation is made it has to be deleted to avoid the above mentioned issues.
+
+To call specific functions for a Directory objects stored in a Resource*, 
+what special C++ operation did you have to do and why?
+
+in order to to use functions from Directory from an object Resource* we
+would need dynamically cast to convert the Resource* to a Directory* as
+the base class does not have access to the derived class's methods in this
+case we try to dynamically cast a Resource to Directory and it will only 
+allow you to call the derived methods if the Resource is an object type
+Directory.
+
+In this workshop you had to use std::vector<seneca::Resource*> to store 
+a collection of filesystem resources as pointers. Could you have used 
+std::vector<seneca::Resource> instead? Justify your answer!
+
+I do not believe that the use of "std::vector<seneca::Resource>" instead 
+of "std::vector<seneca::Resource*>" would not be possible as the vector
+would not be able to store the derived class objects and would only store
+the base class and losing all the derived part information and functionality
+hence this would not support polymorphism.

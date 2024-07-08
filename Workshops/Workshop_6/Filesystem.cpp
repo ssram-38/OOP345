@@ -1,5 +1,5 @@
 /*****************************************************************
-						Declaration
+                        Declaration
 Name       : Sarandip Sahota Ram
 Email      : ssram@myseneca.ca
 Student_ID : 106824238
@@ -10,7 +10,6 @@ I only copied the code that my professor provided to complete my
 workshops and assignments. This submitted piece of work has not
 been shared with any other student or 3rd party contenppt provider.
 *****************************************************************/
-
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -19,6 +18,7 @@ been shared with any other student or 3rd party contenppt provider.
 #include "utils.h"
 
 namespace seneca {
+	// Constructor that initializes the root directory
     Filesystem::Filesystem(std::string fileName, std::string root) {
         // Create root directory
         m_root = new Directory(root);
@@ -99,11 +99,12 @@ namespace seneca {
 
     }
 
-    Filesystem::Filesystem(Filesystem&& other) noexcept : m_root(other.m_root), m_current(other.m_current) {
-        other.m_root = nullptr;
-        other.m_current = nullptr;
+	// Move constructor
+    Filesystem::Filesystem(Filesystem&& other) noexcept {
+        *this = std::move(other);
     }
 
+	// Move assignment operator
     Filesystem& Filesystem::operator=(Filesystem&& other) noexcept {
         if (this != &other) {
             delete m_root;
@@ -115,11 +116,13 @@ namespace seneca {
         return *this;
     }
 
+	// Overloaded += operator that adds a resource to the current directory
     Filesystem& Filesystem::operator+=(Resource* res) {
         *m_current += res;
         return *this;
     }
 
+	// Changes the current directory
     Directory* Filesystem::change_directory(const std::string& newCurrentDir) {
         if (newCurrentDir.empty()) {
             m_current = m_root;
@@ -135,13 +138,13 @@ namespace seneca {
         return m_current;
     }
 
+	// Returns the current directory
     Directory* Filesystem::get_current_directory() const {
         return m_current;
     }
 
+	// Destructor
     Filesystem::~Filesystem() {
         delete m_root;
-
     }
-
 }
