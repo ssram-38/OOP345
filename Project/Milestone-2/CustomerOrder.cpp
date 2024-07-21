@@ -16,9 +16,14 @@ been shared with any other student or 3rd party contenppt provider.
 namespace seneca {
 
 	size_t CustomerOrder::m_widthField = 1;
-
+	
 	// Defualt constructor
-	CustomerOrder::CustomerOrder() : m_name(""), m_product(""), m_cntItem(0), m_lstItem(nullptr) {};
+	CustomerOrder::CustomerOrder() {
+		m_name = { "" };
+		m_product = { "" };
+		m_cntItem = { 0 };
+		m_lstItem = { nullptr };
+	}
 
 	// 1-argument constructor
 	CustomerOrder::CustomerOrder(const std::string str) {
@@ -66,6 +71,14 @@ namespace seneca {
 	// Move assignment operator
 	CustomerOrder& CustomerOrder::operator=(CustomerOrder&& src) noexcept {
 		if (this != &src) {
+
+			for (size_t i = 0; i < m_cntItem; i++) {
+				// delete the inner array
+				delete m_lstItem[i];
+			}
+			// delete the outer array
+			delete[] m_lstItem;
+			
 			// Move the data from the source to the current object
 			m_name = src.m_name;
 			m_product = src.m_product;

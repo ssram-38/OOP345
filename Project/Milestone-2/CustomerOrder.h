@@ -30,15 +30,15 @@ namespace seneca {
 			Item(const std::string& src) : m_itemName(src) {};
 		};
 		// Class members
-		std::string m_name;
-		std::string m_product;
-		size_t m_cntItem;
-		Item** m_lstItem;
+		std::string m_name{ "" };
+		std::string m_product{ "" };
+		size_t m_cntItem{ 0 };
+		Item** m_lstItem{ nullptr };
 		static size_t m_widthField;
 	public:
 		// Public member functions
 		CustomerOrder();
-		CustomerOrder(const std::string str);
+		CustomerOrder(const std::string);
 		CustomerOrder(const CustomerOrder&);
 		CustomerOrder& operator=(const CustomerOrder&) = delete;
 		CustomerOrder(CustomerOrder&&) noexcept;
