@@ -11,8 +11,8 @@ I only copied the code that my professor provided to complete my
 workshops and assignments. This submitted piece of work has not
 been shared with any other student or 3rd party contenppt provider.
 *****************************************************************/
-#ifndef SENECE_CUSTOMER_ORDER_H
-#define SENECE_CUSTOMER_ORDER_H
+#ifndef SENECA_CUSTOMER_ORDER_H
+#define SENECA_CUSTOMER_ORDER_H
 
 #include <algorithm>
 #include "Station.h"
@@ -52,4 +52,4 @@ namespace seneca {
 
 }
 
-#endif // !SENECE_CUSTOMER_ORDER_H
+#endif // !SENECA_CUSTOMER_ORDER_H
