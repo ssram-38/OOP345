@@ -1,0 +1,55 @@
+1. Why could we not use a `unique_ptr` in your `Database` class?
+
+A `unique_ptr` is designed to ensure sole ownership of the object it manages.
+In the context of the `Database` class, it is required that there be one,
+and only one, shared instance of the `Database` that can be accessed 
+globally within the application. This means multiple parts of the 
+program might need to access this single instance.
+
+If a `unique_ptr` were used instead of a `shared_ptr`, ownership could not be shared.
+Once a part of the program takes ownership of the `unique_ptr`, no other part can access it. 
+A `shared_ptr` allows multiple parts of the program to hold a reference to the same 
+`Database` instance, ensuring that the instance persists as long as it is needed.
+
+ 2. What changes did you have to make in part 1 to transform the class into a templated one?
+
+To transform the `Database` class into a templated one, the following changes were necessary:
+
+- Add the `template <typename T>` declaration before the class definition.
+- Change all member variable types and function parameters to use the template type `T`.
+- Define the template specialization for `encryptDecrypt` functions.
+- Explicitly instantiate the template for specific types in the `Database.cpp` file.
+- Use `std::shared_ptr<Database<T>>` instead of `std::shared_ptr<Database>` to handle the singleton instance for different types.
+
+ 3. A class that allows only one instance to be created is called a singleton.
+ Can you think of another way to create a singleton without using static members?
+ How would that object be managed?
+
+Another way to create a singleton without using static members is by using a `std::shared_ptr`
+and ensuring that the constructor is private and only accessible through a static method that
+returns the `shared_ptr`. One approach is to use a factory function or a dependency injection 
+framework to manage the lifetime of the singleton instance. In this approach, the `getInstance`
+method creates the singleton instance the first time it is called and returns the same instance
+for all subsequent calls.
+
+4. The class `Database` has a resource attribute (the database instance), yet no copy/move operations were implemented. Is that a bug (justify your answer)?
+
+Yes, it is a bug. The `Database` class manages a resource (the database instance) and does 
+not implement copy/move constructors or assignment operators. This can lead to issues if 
+an attempt is made to copy or move a `Database` instance. The correct approach is to delete 
+the copy and move constructors and assignment operators to prevent copying and moving,
+ensuring that only one instance of the `Database` exists.
+
+
+5. We said that the class `Database` can be instantiated only once, yet in the output we see
+that the custom constructor is called twice (same for the destructor). Explain.
+
+The output indicates that the custom constructor is called twice and the destructor is also
+called twice, which implies that two instances of the `Database` class are being created and
+destroyed. This behavior suggests that the `getInstance` function is being called with 
+different template parameters, leading to the instantiation of separate `Database` 
+instances for each template type.
+
+Each template instantiation creates a distinct type, and thus, each has its own static 
+`m_pDatabase` pointer. For example, `Database<std::string>` and `Database<long long>` 
+are treated as separate types, each with its own singleton instance.
