@@ -16,8 +16,6 @@ using namespace std;
 
 namespace seneca {
 
-	
-
 	std::string Bakery::trim(const std::string& str)
 	{
 		auto start = str.find_first_not_of(" ");
