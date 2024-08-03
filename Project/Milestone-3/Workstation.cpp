@@ -38,11 +38,11 @@ namespace seneca {
 
 				if (m_orders.front().isOrderFilled())
 				{
-					g_completed.emplace_back(std::move(m_orders.front()));
+					g_completed.push_back(std::move(m_orders.front()));
 				}
 				else
 				{
-					g_incomplete.emplace_back(std::move(m_orders.front()));
+					g_incomplete.push_back(std::move(m_orders.front()));
 				}
 			}
 			else

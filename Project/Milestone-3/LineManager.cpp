@@ -12,9 +12,10 @@ been shared with any other student or 3rd party contenppt provider.
 *****************************************************************/
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 #include "LineManager.h"
 #include "Utilities.h"
-#include <algorithm>
+
 
 namespace seneca {
 	LineManager::LineManager(const std::string& file, const std::vector<Workstation*>& stations)
@@ -32,7 +33,7 @@ namespace seneca {
 
 		while (!input.eof())
 		{
-			getline(input, data);
+			std::getline(input, data);
 			size_t pos = 0;
 			bool more = true;
 			std::string currentStation, nextStation;
@@ -120,17 +121,17 @@ namespace seneca {
 			m_activeLine[i]->attemptToMoveOrder();
 		}
 
-		bool isEmpty = true;
+		bool notEmpty = false;
 		for (unsigned int i = 0; i < m_activeLine.size(); i++)
 		{
 			if (!m_activeLine[i]->empty())
 			{
-				isEmpty = false;
+				notEmpty = true;
 				break;
 			}
 		}
 
-		return isEmpty;
+		return notEmpty;
 	}
 
 	void LineManager::display(std::ostream& os) const

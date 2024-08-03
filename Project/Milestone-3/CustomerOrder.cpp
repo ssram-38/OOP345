@@ -129,32 +129,29 @@ namespace seneca {
 
 	// fillItem function
 	void CustomerOrder::fillItem(Station& station, std::ostream& os) {
-		// Loop through each item in the order
-		for (size_t i = 0; i < m_cntItem; ++i) {
-			// Check if the item names match
-			if (m_lstItem[i]->m_itemName == station.getItemName()) {
-				// Check if the item is not already filled
-				if (!m_lstItem[i]->m_isFilled) {
-					// Check if the station has enough quantity to fulfill the order
-					if (station.getQuantity() > 0) {
-						// Update the serial number and mark the item as filled
-						m_lstItem[i]->m_serialNumber = station.getNextSerialNumber();
-						m_lstItem[i]->m_isFilled = true;
-						// Update the station's quantity
-						station.updateQuantity();
-						// Output success message
-						os << "    Filled " << m_name << ", " << m_product << " [" << m_lstItem[i]->m_itemName << "]" << std::endl;
-					}
-					else {
-						// Output message if the station does not have enough quantity
-						os << "    Unable to fill " << m_name << ", " << m_product << " [" << m_lstItem[i]->m_itemName << "]" << std::endl;
-					}
+		for (size_t i = 0; i < m_cntItem; i++)
+		{
+			if (m_lstItem[i]->m_isFilled == false && m_lstItem[i]->m_itemName == station.getItemName()) {
+
+				if (station.getQuantity() > 0)
+				{
+					m_lstItem[i]->m_serialNumber = station.getNextSerialNumber();
+					m_lstItem[i]->m_isFilled = true;
+					station.updateQuantity();
+					os << std::setw(11) << std::right;
+					os << "Filled " << m_name << ", " << m_product << " [" << m_lstItem[i]->m_itemName << "] " << std::endl;
+
+					break;
 				}
-				// If an item is found and processed, break the loop
-				break;
+				else
+				{
+					os << "    Unable to fill " << m_name << ", " << m_product << " [" << m_lstItem[i]->m_itemName << "]" << std::endl;
+				}
 			}
 		}
 	}
+
+
 
 
 	// display function

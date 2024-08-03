@@ -18,6 +18,7 @@ been shared with any other student or 3rd party contenppt provider.
 #include <string>
 #include <vector>
 #include <iostream>
+#include "CustomerOrder.h"
 #include "Workstation.h"
 
 namespace seneca {
